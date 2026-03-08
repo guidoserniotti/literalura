@@ -18,8 +18,9 @@ import com.alura.literalura.service.LibroService;
 public class Principal {
     private Scanner teclado = new Scanner(System.in);
     private ConsumoAPI consumoApi = new ConsumoAPI();
-    private static final String URL_BASE = "http://gutendex.com/books/";
+    private static final String URL_BASE = "https://gutendex.com/books/";
     private ConvierteDatos conversor = new ConvierteDatos();
+
     @Autowired
     private LibroService libroService;
 
@@ -28,7 +29,6 @@ public class Principal {
         while (opcion != 0) {
             var menu = """
                     ===== LITERALURA =====
-                    
                     1 - Buscar libro por titulo
                     2 - Listar libros registrados
                     3 - Listar autores registrados

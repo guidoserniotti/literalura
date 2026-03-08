@@ -36,13 +36,11 @@ public class LibroService {
 
         var datosAutor = datosLibro.primerAutor();
 
-        Autor autor = autorRepository.findAll().stream()
-                .filter(a -> a.getNombre().equalsIgnoreCase(datosAutor.nombre()))
-                .findFirst()
+        Autor autor = autorRepository.findByNombreIgnoreCase(datosAutor.nombre())
                 .orElseGet(() -> autorRepository.save(
                         new Autor(datosAutor.nombre(),
-                                  datosAutor.anioNacimiento(),
-                                  datosAutor.anioFallecimiento())));
+                                datosAutor.anioNacimiento(),
+                                datosAutor.anioFallecimiento())));
 
         Libro libro = new Libro(datosLibro.titulo(), datosLibro.primerIdioma(),
                                 datosLibro.numeroDescargas(), autor);
@@ -60,14 +58,14 @@ public class LibroService {
 
 
     public List<AutorDTO> listarAutores() {
-        return autorRepository.findAll().stream()
+        return autorRepository.findAllWithLibros().stream()
                 .map(this::toAutorDTO)
                 .collect(Collectors.toList());
     }
 
     public List<AutorDTO> autoresVivosEn(int anio) {
         return autorRepository
-                .findByAnioNacimientoLessThanEqualAndAnioFallecimientoGreaterThanEqual(anio, anio)
+                .findAutoresVivosEnWithLibros(anio)
                 .stream()
                 .map(this::toAutorDTO)
                 .collect(Collectors.toList());
